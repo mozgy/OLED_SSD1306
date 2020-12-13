@@ -15,7 +15,6 @@
  *
  */
 
-#include <Wire.h>
 #include "OLED_SSD1306.h"
 #include "font.h"
 
@@ -30,17 +29,17 @@ OLED_SSD1306::OLED_SSD1306( uint8_t i2caddr, uint8_t offset ) {
 }
 
 void OLED_SSD1306::SendCommand( unsigned char cmd ) {
-  Wire.beginTransmission( localI2CAddress );
-  Wire.write( 0x80 );
-  Wire.write( cmd );
-  Wire.endTransmission();
+  wire->beginTransmission( localI2CAddress );
+  wire->write( 0x80 );
+  wire->write( cmd );
+  wire->endTransmission();
 }
 
 void OLED_SSD1306::SendChar( unsigned char data ) {
-  Wire.beginTransmission( localI2CAddress );
-  Wire.write( 0x40 );
-  Wire.write( data );
-  Wire.endTransmission();
+  wire->beginTransmission( localI2CAddress );
+  wire->write( 0x40 );
+  wire->write( data );
+  wire->endTransmission();
 }
 
 void OLED_SSD1306::SetCursorXY( unsigned char row, unsigned char col ) {
@@ -141,7 +140,8 @@ void OLED_SSD1306::DisplayOFF(void) {
   SendCommand( 0xAE );  // Set Display Off
 }
 
-void OLED_SSD1306::Init(void) {
+void OLED_SSD1306::Init(TwoWire *twi) {
+	wire = twi ? twi : &Wire;
 
   SendCommand( 0xAE );  // Set Display Off
 

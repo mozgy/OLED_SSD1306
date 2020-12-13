@@ -17,6 +17,7 @@
 
 #ifndef OLED_SSD1306_H
 #define OLED_SSD1306_H
+#include <Wire.h>
 
 class OLED_SSD1306 {
 
@@ -24,13 +25,14 @@ class OLED_SSD1306 {
 
     uint8_t localI2CAddress;
     uint8_t low_col_offset;
+		TwoWire *wire;
 
   public:
 
     OLED_SSD1306( uint8_t i2caddr );
     OLED_SSD1306( uint8_t i2caddr, uint8_t offset );
 
-    void Init( void );
+    void Init( TwoWire *twi ) = &Wire;
 
     void SendCommand( unsigned char Command );
     void SendChar( unsigned char Data );
